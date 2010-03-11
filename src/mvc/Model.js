@@ -2,6 +2,11 @@
 	Model. - Model, and Model.Fields
 	Dependencies: monstar/GetClass.js
 */
+(function(context) {
+	
+var GetClass = init.mvc('GetClass').GetClass,
+	Element = init.core('mootools').Element;
+
 var Model = new Class({
     
     Implements: [GetClass],
@@ -84,3 +89,7 @@ Element.Properties.model = {
 		return null;
 	}
 };
+
+this.Model = Model;
+
+})(typeof exports !== 'undefined' ? exports : this)

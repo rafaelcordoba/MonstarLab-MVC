@@ -2,7 +2,12 @@
 	Model.Ajax - Ajax Model class for Web Server Storage
 	Dependencies: mootools-core/Request.JSON
 */
-(function() {
+(function(context) {
+
+var Model = require('mvc/Model'),
+	Request = require('core/mootools');
+	
+	
 Model.Ajax = new Class({
    
     Extends: Model,
@@ -138,4 +143,6 @@ Request.implement('isSuccess', function() {
 	return (this.status >= 200 && this.status < 300) || (this.status == 0 && this.xhr.responseText != '');
 });
 
-})();
+exports.Model = Model;
+
+})(typeof exports !== 'undefined' ? exports : this);

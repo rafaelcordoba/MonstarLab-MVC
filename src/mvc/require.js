@@ -1,5 +1,7 @@
 (function(global) {
 	
+	var cache = {};
+	
 	var pathify = function(path) {
 		return path + '.js';
 	}
@@ -19,12 +21,13 @@
 	}
 	
 	global.require =  function(path) {
+		if(cache[path]) return cache[path];
 		var source = xhr(pathify(path));
 		if(source === null) {
 			throw new Error('Module not found ('+path+')');
 		}
 		
 		var fn = wrap(source);
-		return fn({});
+		return cache[path] = fn({});
 	};
 })(this);
