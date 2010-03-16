@@ -3,7 +3,10 @@
 	function. Returns classname of the instance. Uses Hash.findKey
 */
 // [object Object].get_class() == 'Model.Ajax'
-/*Hash.implement({
+
+/*
+//caused infinite loop
+Hash.implement({
 	findKey: function(key) {  
         if(key === null || typeof key == 'undefined') return null;
 		var val = this.keyOf(key);
@@ -24,6 +27,15 @@
     }   
 });*/
 
+(function(context) {
+
+var Moo = require('core/mootools'),
+	Class = Moo.Class,
+	Browser = Moo.Browser,
+	Hash = Moo.Hash,
+	$H = Moo.$H,
+	$self = self;
+
 var GetClass = new Class({
 	get_class: function() {
 		return this.$class ?
@@ -36,13 +48,13 @@ GetClass.get = (function() {
 	var ignore = ['sessionStorage'];
 	return Browser.Engine.gecko ? function(obj) {
 		var win = new Hash({});
-		for(var key in window) {
+		for(var key in $self) {
 			if(ignore.indexOf(key) !== -1) continue;			
 			if(window[key] == obj) return key
 		}
 		return null;
 	} : function(obj) {
-		return $H(window).keyOf(obj); //findKey(obj);
+		return $H($self).keyOf(obj); //findKey(obj);
 	}
 })();
 
@@ -56,3 +68,7 @@ GetClass.get_class = function(obj) {
 		obj.$class :
 		obj.$class = (obj.constructor && GetClass.get(obj.constructor));
 }
+
+context.GetClass = GetClass;
+
+})(typeof exports !== 'undefined' ? exports : this);
